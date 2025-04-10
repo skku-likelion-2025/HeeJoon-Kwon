@@ -13,32 +13,26 @@
     </script>
     <!--jsx-->
     <script type="text/babel">
-        const root=document.getElementById("root");
-        /* root for moving javascript to html */
-        function Title() {
-            return (<h3 id="title" onMouseEnter={
-                ()=>console.log("mouse enter")
-            }>Hello I'm a title
-            </h3>);
+        const root=document.getElementById("root"); 
+        /* everytime we change Data and want to show updated Data, we have to remember re-rendering
+        instead of this, the best way to trigger re-render is using state*/
+        function App() {
+            let [counter,setCounter] = React.useState(0);
+            /* React.useState(initial_value) returns array [initial_value,f], f is function to modify the value */
+            const onClick = () => {
+                setCounter((current) => current+ 1);
+            }
+            /* the function from state array changes the data and triggers re-render automatically, so we dont need to trigger re-render manually*/
+            return(
+                <div>
+                    <h3>Total clicks: {counter}</h3>
+                    <button onClick={onClick}>Click me</button>
+                </div>
+            );
         }
-        /* making component with 'function Name( ){return( );}'
-        JSX makes this HTML-like code to 'create element'
-        assign {javascript expression} to onMouseEnter event handler */
-        /* const h3=React.createElement("h3",{onMouseEnter:()=>console.log("mouse enter")},"Hello I'm a span"); 
-        in {object}, define a property with the key:value pair */
-        const Button = () => (
-            <button style={{backgroundColor:"tomato"}} onClick={()=>console.log("im clicked")}>Click me</button>
-        );
-        /* '()=>();' === '()=>{return();}'
-        style={object} in {javascript expression}*/
-        /* const btn=React.createElement("button",{onClick: ()=>console.log("im clicked")},"Click me"); */
-        const Container = () => (
-            <div>
-            <Title />
-            <Button />
-            </div>
-        );
-        ReactDOM.render(<Container />,root);
-        /* react dom renders javascript on html */
+        /* above all codes are just definition, so do not run immediately*/
+        ReactDOM.render(<App />,root);
+        /* react dom rendering is putting javascript into root in html
+        this rendering runs immediately */
     </script>
 </html>
