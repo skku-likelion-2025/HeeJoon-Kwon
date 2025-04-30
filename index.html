@@ -9,28 +9,54 @@
     <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js">
     </script>
     <!--react dom-->
+    <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js">
+    </script>
+    <!--propTypes-->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js">
     </script>
     <!--jsx-->
     <script type="text/babel">
-        const root=document.getElementById("root"); 
-        /* everytime we change Data and want to show updated Data, we have to remember re-rendering
-        instead of this, the best way to trigger re-render is using state*/
-        function App() {
-            let [counter,setCounter] = React.useState(0);
-            /* React.useState(initial_value) returns array [initial_value,f], f is function to modify the value */
-            const onClick = () => {
-                setCounter((current) => current+ 1);
-            }
-            /* the function from state array changes the data and triggers re-render automatically, so we dont need to trigger re-render manually*/
+        function Btn({ text, fontSize = 12 }) {
+            /* instead of props.element, short cut: by using curly braces, take what we want */
             return(
+                <button
+                    /*onClick={onClick}*/
+                    style={{
+                        backgroundColor: "tomato",
+                        color: "white",
+                        padding: "10px 20px",
+                        border: 0,
+                        borderRadius: 10,
+                        fontSize,
+                    }}>
+                    {text}
+                </button>
+            );
+        }
+        /*props is object*/
+        /* function component */
+        /*const MemorizedBtn = React.memo(Btn); */
+        Btn.propTypes= {
+            text: PropTypes.string.isRequired,
+            fontsize: PropTypes.number,
+        };
+        /* propTypes check types of props */
+        function App() {
+            const [value, setValue] = React.useState("Save Changes");
+            const changeValue = () => setValue("Revert Changes");
+            return (
                 <div>
-                    <h3>Total clicks: {counter}</h3>
-                    <button onClick={onClick}>Click me</button>
+                    <Btn text='save changes' fontSize={16} />
+                    <Btn text='Continue' />
+                    {/* they will be in props, not automatically into return until i use them*/}
+                    {/* jsx is html-like code. so in order to use javascript in it, use curly braces */}
+                    {/*<MemorizedBtn text='save changes' onClick={changeValue} />
+                    <MemorizedBtn text='Continue' />*/}
+                    {/*whenever changes state, re-render every buttons, so use memo(rize) that dont need to re-render components if the props dont change*/}
                 </div>
             );
         }
-        /* above all codes are just definition, so do not run immediately*/
+        const root = document.getElementById('root');
         ReactDOM.render(<App />,root);
         /* react dom rendering is putting javascript into root in html
         this rendering runs immediately */
